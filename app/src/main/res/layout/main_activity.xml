@@ -6,6 +6,8 @@
         <variable
             name="mainActivityViewModel"
             type="com.example.modeso_mmac.rxjavaexample.viewmodel.MainActivityViewModel" />
+
+        <import type="android.view.View" />
     </data>
 
     <LinearLayout
@@ -34,7 +36,8 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="5dp"
             android:text="@{String.valueOf(mainActivityViewModel.user.level)}"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            android:visibility="@{mainActivityViewModel.user.level > 0 ? View.VISIBLE : View.INVISIBLE}" />
 
         <FrameLayout
             android:layout_width="match_parent"
