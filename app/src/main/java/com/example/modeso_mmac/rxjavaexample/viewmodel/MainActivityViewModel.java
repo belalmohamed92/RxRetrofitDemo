@@ -5,9 +5,11 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.example.modeso_mmac.rxjavaexample.BR;
+import com.example.modeso_mmac.rxjavaexample.errorhandling.ApiErrorResponse;
 import com.example.modeso_mmac.rxjavaexample.base.BaseViewModel;
 import com.example.modeso_mmac.rxjavaexample.datamodel.User;
 import com.example.modeso_mmac.rxjavaexample.services.ObservableLayer;
+import com.example.modeso_mmac.rxjavaexample.errorhandling.RetrofitException;
 
 import java.util.List;
 
@@ -55,8 +57,32 @@ public class MainActivityViewModel extends BaseViewModel<List<User>> {
 
     @Override
     public void onError(Throwable e) {
-        e.printStackTrace();
-        Log.d(TAG, "onError");
+
+        Log.d(TAG, "onError Called");
+
+        if (e instanceof RetrofitException) {
+            String errorMessage = "";
+            RetrofitException retrofitException = (RetrofitException) e;
+            switch (retrofitException.getKind()) {
+                case HTTP:
+                    ApiErrorResponse apiErrorResponse = retrofitException.getErrorBodyAs(ApiErrorResponse.class);
+                    if (apiErrorResponse != null) {
+                        errorMessage = apiErrorResponse.getMessage();
+                    } else {
+                        errorMessage = "Unknown Error!";
+                    }
+                    break;
+                case NETWORK:
+                    errorMessage = "Connection problem";
+                    break;
+                case UNEXPECTED:
+                    errorMessage = "Unknown Error!";
+                    break;
+            }
+
+            Log.d(TAG, errorMessage);
+
+        }
     }
 
     @Override

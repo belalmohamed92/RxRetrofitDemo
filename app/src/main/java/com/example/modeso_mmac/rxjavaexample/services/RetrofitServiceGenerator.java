@@ -1,8 +1,9 @@
 package com.example.modeso_mmac.rxjavaexample.services;
 
+import com.example.modeso_mmac.rxjavaexample.errorhandling.RxErrorHandlingCallAdapterFactory;
+
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
@@ -19,7 +20,7 @@ public class RetrofitServiceGenerator {
             new Retrofit.Builder()
                     .baseUrl(API_BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
-                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create());
+                    .addCallAdapterFactory(RxErrorHandlingCallAdapterFactory.create());
 
     public static <T> T createService(Class<T> serviceClass) {
         Retrofit retrofit = mRetrofitBuilder.client(mHttpClient.build()).build();
