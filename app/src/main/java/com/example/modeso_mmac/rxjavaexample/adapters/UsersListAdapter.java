@@ -8,8 +8,10 @@ import android.view.ViewGroup;
 
 import com.example.modeso_mmac.rxjavaexample.BR;
 import com.example.modeso_mmac.rxjavaexample.R;
-import com.example.modeso_mmac.rxjavaexample.api.SearchUsersResponse;
 import com.example.modeso_mmac.rxjavaexample.databinding.RecyclerItemBinding;
+import com.example.modeso_mmac.rxjavaexample.datamodel.User;
+
+import java.util.List;
 
 
 /**
@@ -18,10 +20,10 @@ import com.example.modeso_mmac.rxjavaexample.databinding.RecyclerItemBinding;
  */
 public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.ViewHolder> {
 
-    private SearchUsersResponse searchUsersResponse;
+    private List<User> mUsers;
 
-    public UsersListAdapter(SearchUsersResponse searchUsersResponse) {
-        this.searchUsersResponse = searchUsersResponse;
+    public UsersListAdapter(List<User> users) {
+        this.mUsers = users;
     }
 
     @Override
@@ -32,13 +34,13 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.binding.setVariable(BR.user, searchUsersResponse.getUsers().get(position));
+        holder.binding.setVariable(BR.user, mUsers.get(position));
         holder.binding.executePendingBindings();
     }
 
     @Override
     public int getItemCount() {
-        return searchUsersResponse.getUsers() != null ? searchUsersResponse.getUsers().size() : 0;
+        return mUsers != null ? mUsers.size() : 0;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

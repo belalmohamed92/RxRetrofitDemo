@@ -25,7 +25,7 @@ public abstract class ObservableLayer {
      * @param bindObservable The observable binding of the search editText.
      * @return Observable.
      */
-    public static Subscription searchUsers(Observable<CharSequence> bindObservable, Observer<SearchUsersResponse> observer) {
+    public static Subscription searchUsers(Observable<CharSequence> bindObservable, Observer<List<User>> observer) {
         UserClient userClient = RetrofitServiceGenerator.createService(UserClient.class);
 
         return bindObservable
@@ -34,6 +34,7 @@ public abstract class ObservableLayer {
                 .observeOn(Schedulers.io())
                 .flatMap(userClient::getUsers)
                 .debounce(300, TimeUnit.MILLISECONDS)
+                .map(SearchUsersResponse::getUsers)
                 .cache()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

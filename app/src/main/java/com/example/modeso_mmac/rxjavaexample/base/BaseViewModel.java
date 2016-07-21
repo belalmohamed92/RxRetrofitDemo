@@ -1,6 +1,5 @@
 package com.example.modeso_mmac.rxjavaexample.base;
 
-import android.databinding.BaseObservable;
 import android.support.annotation.NonNull;
 
 import rx.Observer;
@@ -11,7 +10,7 @@ import rx.subscriptions.CompositeSubscription;
  * Created by Belal Mohamed on 7/20/16.
  * www.modeso.ch
  */
-public abstract class BaseViewModel<T> extends BaseObservable implements Observer<T> {
+public abstract class BaseViewModel<T> implements Observer<T> {
 
     private CompositeSubscription mCompositeSubscription;
 

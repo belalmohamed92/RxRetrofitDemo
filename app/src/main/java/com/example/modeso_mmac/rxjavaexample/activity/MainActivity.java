@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements ListChangeListene
 
             if (recyclerView != null) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(this));
-                mAdapter = new UsersListAdapter(mViewModel.getSearchUserResponse());
+                mAdapter = new UsersListAdapter(mViewModel.getUsers());
                 recyclerView.setAdapter(mAdapter);
             }
         }

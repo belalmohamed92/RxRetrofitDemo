@@ -3,7 +3,7 @@ package com.example.modeso_mmac.rxjavaexample.viewmodel;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.example.modeso_mmac.rxjavaexample.api.SearchUsersResponse;
+import com.example.modeso_mmac.rxjavaexample.datamodel.User;
 import com.example.modeso_mmac.rxjavaexample.errorhandling.ApiErrorResponse;
 import com.example.modeso_mmac.rxjavaexample.base.BaseViewModel;
 import com.example.modeso_mmac.rxjavaexample.listeners.ListChangeListener;
@@ -11,24 +11,27 @@ import com.example.modeso_mmac.rxjavaexample.services.ObservableLayer;
 import com.example.modeso_mmac.rxjavaexample.errorhandling.RetrofitException;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import rx.Observable;
 
 /**
  * Created by Belal Mohamed on 7/19/16.
  * www.modeso.ch
  */
-public class MainActivityViewModel extends BaseViewModel<SearchUsersResponse> {
+public class MainActivityViewModel extends BaseViewModel<List<User>> {
 
     private static final String TAG = MainActivityViewModel.class.getName();
 
     private Observable<CharSequence> mSearchEditTextObservable;
-    private SearchUsersResponse mSearchUserResponse;
     private ListChangeListener mListChangeListener;
+    private List<User> mUsers;
 
 
     public MainActivityViewModel(@NonNull Observable<CharSequence> searchEditTextObservable, ListChangeListener listChangeListener) {
         mSearchEditTextObservable = searchEditTextObservable;
-        mSearchUserResponse = new SearchUsersResponse();
+        mUsers = new ArrayList<>();
         mListChangeListener = listChangeListener;
     }
 
@@ -84,12 +87,13 @@ public class MainActivityViewModel extends BaseViewModel<SearchUsersResponse> {
     }
 
     @Override
-    public void onNext(SearchUsersResponse searchUsersResponse) {
-        mSearchUserResponse.setUsers(searchUsersResponse.getUsers());
+    public void onNext(List<User> users) {
+        mUsers.clear();
+        mUsers.addAll(users);
         mListChangeListener.updateAdapter();
     }
 
-    public SearchUsersResponse getSearchUserResponse() {
-        return mSearchUserResponse;
+    public List<User> getUsers() {
+        return mUsers;
     }
 }
