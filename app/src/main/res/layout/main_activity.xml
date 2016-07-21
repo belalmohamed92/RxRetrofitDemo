@@ -1,48 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <data>
-
-        <variable
-            name="mainActivityViewModel"
-            type="com.example.modeso_mmac.rxjavaexample.viewmodel.MainActivityViewModel" />
-
-        <import type="android.view.View" />
-    </data>
-
-    <LinearLayout
+    <EditText
+        android:id="@+id/search_edit_text"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content" />
 
-        <EditText
-            android:id="@+id/search_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/users_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
-        <TextView
-            android:id="@+id/user_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            android:text="@{mainActivityViewModel.user.name}"
-            android:textSize="24sp" />
-
-        <TextView
-            android:id="@+id/user_level"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="5dp"
-            android:text="@{String.valueOf(mainActivityViewModel.user.level)}"
-            android:textSize="24sp"
-            android:visibility="@{mainActivityViewModel.user.level > 0 ? View.VISIBLE : View.INVISIBLE}" />
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-    </LinearLayout>
-</layout>
+</LinearLayout>

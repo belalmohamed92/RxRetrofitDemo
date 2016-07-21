@@ -3,11 +3,6 @@ package com.example.modeso_mmac.rxjavaexample.base;
 import android.databinding.BaseObservable;
 import android.support.annotation.NonNull;
 
-import com.example.modeso_mmac.rxjavaexample.datamodel.User;
-
-import java.util.List;
-
-import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;

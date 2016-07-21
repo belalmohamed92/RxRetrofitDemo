@@ -1,17 +1,15 @@
 package com.example.modeso_mmac.rxjavaexample.viewmodel;
 
-import android.databinding.Bindable;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.example.modeso_mmac.rxjavaexample.BR;
+import com.example.modeso_mmac.rxjavaexample.api.SearchUsersResponse;
 import com.example.modeso_mmac.rxjavaexample.errorhandling.ApiErrorResponse;
 import com.example.modeso_mmac.rxjavaexample.base.BaseViewModel;
-import com.example.modeso_mmac.rxjavaexample.datamodel.User;
+import com.example.modeso_mmac.rxjavaexample.listeners.ListChangeListener;
 import com.example.modeso_mmac.rxjavaexample.services.ObservableLayer;
 import com.example.modeso_mmac.rxjavaexample.errorhandling.RetrofitException;
 
-import java.util.List;
 
 import rx.Observable;
 
@@ -19,19 +17,19 @@ import rx.Observable;
  * Created by Belal Mohamed on 7/19/16.
  * www.modeso.ch
  */
-public class MainActivityViewModel extends BaseViewModel<List<User>> {
+public class MainActivityViewModel extends BaseViewModel<SearchUsersResponse> {
 
     private static final String TAG = MainActivityViewModel.class.getName();
 
     private Observable<CharSequence> mSearchEditTextObservable;
+    private SearchUsersResponse mSearchUserResponse;
+    private ListChangeListener mListChangeListener;
 
-    @Bindable
-    private User mUser;
 
-
-    public MainActivityViewModel(@NonNull Observable<CharSequence> searchEditTextObservable) {
+    public MainActivityViewModel(@NonNull Observable<CharSequence> searchEditTextObservable, ListChangeListener listChangeListener) {
         mSearchEditTextObservable = searchEditTextObservable;
-        mUser = new User();
+        mSearchUserResponse = new SearchUsersResponse();
+        mListChangeListener = listChangeListener;
     }
 
     @Override
@@ -86,18 +84,12 @@ public class MainActivityViewModel extends BaseViewModel<List<User>> {
     }
 
     @Override
-    public void onNext(List<User> users) {
-        Log.d(TAG, String.valueOf(users.size()));
-        if (users.size() > 0) {
-            mUser = users.get(0);
-        } else {
-            mUser = new User();
-        }
-
-        notifyPropertyChanged(BR.user);
+    public void onNext(SearchUsersResponse searchUsersResponse) {
+        mSearchUserResponse.setUsers(searchUsersResponse.getUsers());
+        mListChangeListener.updateAdapter();
     }
 
-    public User getUser() {
-        return mUser;
+    public SearchUsersResponse getSearchUserResponse() {
+        return mSearchUserResponse;
     }
 }
