@@ -7,13 +7,14 @@ import com.example.modeso_mmac.rxjavaexample.datamodel.User;
 import com.example.modeso_mmac.rxjavaexample.errorhandling.ApiErrorResponse;
 import com.example.modeso_mmac.rxjavaexample.base.BaseViewModel;
 import com.example.modeso_mmac.rxjavaexample.listeners.ListChangeListener;
-import com.example.modeso_mmac.rxjavaexample.services.ObservableLayer;
+import com.example.modeso_mmac.rxjavaexample.services.CoreSubscriptionLayer;
 import com.example.modeso_mmac.rxjavaexample.errorhandling.RetrofitException;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.Realm;
 import rx.Observable;
 
 /**
@@ -27,6 +28,7 @@ public class MainActivityViewModel extends BaseViewModel<List<User>> {
     private Observable<CharSequence> mSearchEditTextObservable;
     private ListChangeListener mListChangeListener;
     private List<User> mUsers;
+    private Realm mRealm;
 
 
     public MainActivityViewModel(@NonNull Observable<CharSequence> searchEditTextObservable, ListChangeListener listChangeListener) {
@@ -38,17 +40,21 @@ public class MainActivityViewModel extends BaseViewModel<List<User>> {
     @Override
     public void onResume() {
         super.onResume();
+        mRealm = Realm.getDefaultInstance();
         bind(mSearchEditTextObservable);
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        mRealm.close();
     }
 
 
     private void bind(Observable<CharSequence> searchEditTextBindingObservable) {
-        addSubscription(ObservableLayer.searchUsers(searchEditTextBindingObservable, this));
+        if (!mRealm.isClosed()) {
+            addSubscription(CoreSubscriptionLayer.searchUsers(searchEditTextBindingObservable, this, mRealm));
+        }
     }
 
     @Override
@@ -60,7 +66,7 @@ public class MainActivityViewModel extends BaseViewModel<List<User>> {
     public void onError(Throwable e) {
 
         Log.d(TAG, "onError Called");
-
+        e.printStackTrace();
         if (e instanceof RetrofitException) {
             String errorMessage = "";
             RetrofitException retrofitException = (RetrofitException) e;
@@ -91,6 +97,7 @@ public class MainActivityViewModel extends BaseViewModel<List<User>> {
         mUsers.clear();
         mUsers.addAll(users);
         mListChangeListener.updateAdapter();
+        Log.d("TESTCALLBACK", "onNext Is Called");
     }
 
     public List<User> getUsers() {
